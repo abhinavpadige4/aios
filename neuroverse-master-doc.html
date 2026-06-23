@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NeuroVerse AI OS — Master Project Document</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --surface3: #22222f;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #e8e8f0;
+    --muted: #888898;
+    --accent: #7c6af7;
+    --accent2: #a78bfa;
+    --accent3: #06d6a0;
+    --accent4: #f59e0b;
+    --accent5: #f472b6;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --cyan: #22d3ee;
+    --font-head: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 17px;
+    background: linear-gradient(90deg, var(--accent2), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.3px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--surface2); }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+  main { padding-top: 56px; }
+
+  /* HERO */
+  .hero {
+    padding: 80px 0 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(124,106,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(124,106,247,0.15);
+    border: 1px solid rgba(124,106,247,0.3);
+    color: var(--accent2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: var(--font-head);
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1.08;
+    margin-bottom: 20px;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent2) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 17px;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .hero-meta-item .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-green { background: var(--accent3); box-shadow: 0 0 6px var(--accent3); }
+  .dot-purple { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .dot-amber { background: var(--accent4); box-shadow: 0 0 6px var(--accent4); }
+
+  /* SECTION */
+  section {
+    padding: 64px 0;
+    border-top: 1px solid var(--border);
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: var(--font-head);
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    margin-bottom: 12px;
+    line-height: 1.15;
+  }
+  .section-desc {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 640px;
+    margin-bottom: 40px;
+    line-height: 1.65;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--border2); transform: translateY(-1px); }
+  .card-title {
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-body { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+  /* GRIDS */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+
+  /* BADGE */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.3px;
+  }
+  .badge-purple { background: rgba(124,106,247,0.15); color: var(--accent2); border: 1px solid rgba(124,106,247,0.25); }
+  .badge-green { background: rgba(6,214,160,0.12); color: var(--accent3); border: 1px solid rgba(6,214,160,0.25); }
+  .badge-amber { background: rgba(245,158,11,0.12); color: var(--accent4); border: 1px solid rgba(245,158,11,0.25); }
+  .badge-red { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+  .badge-blue { background: rgba(59,130,246,0.12); color: var(--blue); border: 1px solid rgba(59,130,246,0.25); }
+  .badge-pink { background: rgba(244,114,182,0.12); color: var(--accent5); border: 1px solid rgba(244,114,182,0.25); }
+
+  /* ARCH DIAGRAM */
+  .arch-layer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: border-color 0.2s;
+  }
+  .arch-layer:hover { border-color: var(--border2); }
+  .arch-layer-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .arch-layer-name {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+  .arch-layer-tech { font-size: 12px; color: var(--muted); }
+  .arch-arrow {
+    text-align: center;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1;
+    margin: 2px 0;
+    opacity: 0.5;
+  }
+
+  /* AGENT CARDS */
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .agent-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .agent-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 14px 14px 0 0;
+  }
+  .agent-research::before { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .agent-memory::before { background: linear-gradient(90deg, var(--cyan), #22d3ee88); }
+  .agent-coding::before { background: linear-gradient(90deg, var(--accent3), #06d6a077); }
+  .agent-planner::before { background: linear-gradient(90deg, var(--accent4), #f59e0b77); }
+  .agent-monitor::before { background: linear-gradient(90deg, var(--accent5), #f472b677); }
+  .agent-icon { font-size: 28px; margin-bottom: 10px; }
+  .agent-name { font-family: var(--font-head); font-weight: 600; font-size: 16px; margin-bottom: 6px; }
+  .agent-desc { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.55; }
+  .agent-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* WEEK TIMELINE */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 11px; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--cyan));
+    opacity: 0.3;
+  }
+  .timeline-item { position: relative; margin-bottom: 32px; }
+  .timeline-dot {
+    position: absolute;
+    left: -27px; top: 8px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+  }
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .week-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .week-title {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 17px;
+  }
+  .week-tasks {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    transition: background 0.15s;
+  }
+  .task-item:hover { background: var(--surface2); }
+  .task-item:last-child { border-bottom: none; }
+  .task-check {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border2);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    color: var(--accent3);
+  }
+  .task-text { color: var(--text); line-height: 1.5; }
+  .task-tag { margin-top: 4px; }
+
+  /* TECH STACK TABLE */
+  .tech-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .tech-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .tech-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .tech-table tr:last-child td { border-bottom: none; }
+  .tech-table tr:hover td { background: var(--surface2); }
+  .tech-name { font-weight: 500; display: flex; align-items: center; gap: 8px; }
+  .free-tag {
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(6,214,160,0.15);
+    color: var(--accent3);
+    border: 1px solid rgba(6,214,160,0.3);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* FLOW DIAGRAM */
+  .flow-step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .flow-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+  }
+  .flow-circle {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .flow-line {
+    width: 1px;
+    flex: 1;
+    min-height: 24px;
+    background: var(--border2);
+    margin: 4px 0;
+  }
+  .flow-content {
+    padding-bottom: 28px;
+    flex: 1;
+    padding-top: 6px;
+  }
+  .flow-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .flow-detail { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.75;
+    overflow-x: auto;
+    color: #c5c8d6;
+  }
+  .code-keyword { color: #c792ea; }
+  .code-string { color: #c3e88d; }
+  .code-comment { color: #546e7a; }
+  .code-fn { color: #82aaff; }
+  .code-type { color: #ffcb6b; }
+
+  /* FEASIBILITY */
+  .feas-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .feas-item:last-child { border-bottom: none; }
+  .feas-label { flex: 1; font-size: 14px; font-weight: 500; }
+  .feas-bar-wrap { flex: 2; height: 6px; background: var(--surface3); border-radius: 100px; overflow: hidden; }
+  .feas-bar { height: 100%; border-radius: 100px; }
+  .feas-score { font-family: var(--font-mono); font-size: 13px; font-weight: 600; min-width: 36px; text-align: right; }
+
+  /* MCP SECTION */
+  .mcp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s;
+  }
+  .mcp-card:hover { border-color: rgba(6,214,160,0.3); }
+  .mcp-name { font-family: var(--font-head); font-weight: 600; font-size: 15px; margin: 8px 0 6px; }
+  .mcp-capabilities { list-style: none; }
+  .mcp-capabilities li {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mcp-capabilities li::before {
+    content: '→';
+    color: var(--accent3);
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  /* MEMORY */
+  .memory-type {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .memory-type::after {
+    content: attr(data-icon);
+    position: absolute;
+    right: 16px; bottom: 12px;
+    font-size: 40px;
+    opacity: 0.06;
+  }
+  .memory-name { font-family: var(--font-head); font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+  .memory-tech { font-size: 12px; color: var(--accent); font-family: var(--font-mono); margin-bottom: 8px; }
+  .memory-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* SELF-IMPROVE LOOP */
+  .loop-steps {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+  .loop-step {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: center;
+    flex: 1;
+    min-width: 100px;
+  }
+  .loop-step-icon { font-size: 22px; margin-bottom: 4px; }
+  .loop-step-name { font-size: 13px; font-weight: 600; }
+  .loop-arrow { color: var(--muted); font-size: 18px; flex-shrink: 0; }
+
+  /* DEPLOYMENT */
+  .deploy-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .deploy-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+  .deploy-logo { font-size: 32px; margin-bottom: 10px; }
+  .deploy-name { font-family: var(--font-head); font-weight: 600; font-size: 16px; margin-bottom: 4px; }
+  .deploy-services { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+  /* RISK TABLE */
+  .risk-row { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .risk-row:last-child { border-bottom: none; }
+  .risk-name { flex: 2; font-weight: 500; }
+  .risk-impact { flex: 1; }
+  .risk-mitigation { flex: 3; color: var(--muted); }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '✓';
+    color: var(--accent3);
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* PART BANNER */
+  .part-banner {
+    background: linear-gradient(135deg, rgba(124,106,247,0.12) 0%, rgba(6,214,160,0.08) 100%);
+    border: 1px solid rgba(124,106,247,0.25);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .part-num {
+    font-family: var(--font-head);
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent2), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    flex-shrink: 0;
+  }
+  .part-info-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .part-info-title { font-family: var(--font-head); font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+  .part-info-desc { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 40px;
+  }
+
+  /* SEPARATOR */
+  .sep { height: 1px; background: var(--border); margin: 0; }
+
+  /* HIGHLIGHT TEXT */
+  .hl { color: var(--accent2); font-weight: 600; }
+  .hl-green { color: var(--accent3); }
+  .hl-amber { color: var(--accent4); }
+
+  /* TABLE WRAPPER */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    overflow-x: auto;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+
+  /* PRINT HINT */
+  @media print {
+    nav { display: none; }
+    main { padding-top: 0; }
+    .card:hover, .agent-card:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">⬡ NeuroVerse AI OS</span>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#arch">Architecture</a></li>
+    <li><a href="#agents">Agents</a></li>
+    <li><a href="#techstack">Stack</a></li>
+    <li><a href="#workflow">Workflow</a></li>
+    <li><a href="#plan">8-Week Plan</a></li>
+    <li><a href="#deploy">Deploy</a></li>
+    <li><a href="#feasibility">Feasibility</a></li>
+  </ul>
+</nav>
+
+<main>
+<!-- ═══════════════════════════════════════════════════════ HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-tag">Master Project Document · v1.0</div>
+    <h1>NeuroVerse <span>AI OS</span></h1>
+    <p class="hero-sub">A Personal Operating System powered by Autonomous Agents — combining research, memory, coding, planning, and self-improvement in one unified system.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="dot dot-green"></div> 8-Week Build Plan</div>
+      <div class="hero-meta-item"><div class="dot dot-purple"></div> 100% Free Tier</div>
+      <div class="hero-meta-item"><div class="dot dot-amber"></div> Production Deployable</div>
+      <div class="hero-meta-item"><div class="dot dot-green"></div> Research-Grade Memory</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ OVERVIEW -->
+<section id="overview">
+  <div class="container">
+    <div class="section-label">01 · Project Overview</div>
+    <h2 class="section-title">What is NeuroVerse?</h2>
+    <p class="section-desc">Think of every major AI tool — ChatGPT, Cursor, Perplexity, Zapier, Notion AI — fused into one autonomous operating system that acts on your behalf without manual intervention.</p>
+
+    <div class="grid-2" style="margin-bottom:32px">
+      <div class="card">
+        <div class="card-title">🎯 The Core Idea</div>
+        <div class="card-body">User speaks a goal. The system autonomously: searches the web, reads PDFs, explores GitHub, creates study roadmaps, generates quizzes, schedules tasks, tracks progress, and produces notes — all without a single manual step.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🧠 What Makes It Research-Level</div>
+        <div class="card-body">Multi-layer agent memory (short-term, long-term, episodic, semantic) combined with a self-improving agent loop that evaluates, diagnoses, fixes, and retries — making it a publishable system, not just a demo.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">⚡ Real-World Use Case (Demo)</div>
+        <div class="card-body">User says <em>"Prepare me for my Data Science interview."</em> System launches 5 agents in parallel: research agent finds topics, planner builds a 7-day schedule, coding agent finds practice repos, memory agent recalls what you already know, monitor agent tracks your quiz scores.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🏗️ Why This Architecture?</div>
+        <div class="card-body">Spring Boot as an enterprise gateway brings robustness that most AI projects skip. Kafka enables true async agent communication. LangGraph gives stateful multi-step reasoning. Together they create a system that handles real production-scale complexity.</div>
+      </div>
+    </div>
+
+    <div class="card" style="background: rgba(124,106,247,0.06); border-color: rgba(124,106,247,0.2);">
+      <div class="card-title" style="font-size:14px; color: var(--accent2); margin-bottom:12px;">🛠 Technologies Learned by Building This</div>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+        <span class="badge badge-purple">LangGraph</span>
+        <span class="badge badge-purple">CrewAI</span>
+        <span class="badge badge-purple">AutoGen</span>
+        <span class="badge badge-green">MCP Protocol</span>
+        <span class="badge badge-green">MCP Server Dev</span>
+        <span class="badge badge-blue">Groq API</span>
+        <span class="badge badge-blue">HuggingFace</span>
+        <span class="badge badge-amber">RAG / Hybrid Search</span>
+        <span class="badge badge-amber">ChromaDB</span>
+        <span class="badge badge-amber">Qdrant</span>
+        <span class="badge badge-red">Apache Kafka</span>
+        <span class="badge badge-red">Spring Boot</span>
+        <span class="badge badge-pink">Docker</span>
+        <span class="badge badge-pink">MLflow</span>
+        <span class="badge badge-blue">FastAPI</span>
+        <span class="badge badge-green">PostgreSQL</span>
+        <span class="badge badge-purple">Redis</span>
+        <span class="badge badge-amber">Prometheus + Grafana</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ ARCHITECTURE -->
+<section id="arch">
+  <div class="container">
+    <div class="section-label">02 · Architecture</div>
+    <h2 class="section-title">System Architecture — Layer by Layer</h2>
+    <p class="section-desc">Every layer has a distinct responsibility. Nothing bleeds into another layer's concern. This separation is what makes the system scalable and testable.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start;">
+      <div>
+        <!-- Layer stack -->
+        <div class="arch-layer" style="border-color: rgba(124,106,247,0.3); background: rgba(124,106,247,0.06);">
+          <div class="arch-layer-icon" style="background: rgba(124,106,247,0.15);">🌐</div>
+          <div>
+            <div class="arch-layer-name" style="color: var(--accent2);">Frontend Layer</div>
+            <div class="arch-layer-tech">Next.js 14 · React · TailwindCSS · Zustand · Socket.io · Vercel</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer" style="border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.06);">
+          <div class="arch-layer-icon" style="background: rgba(59,130,246,0.15);">🔀</div>
+          <div>
+            <div class="arch-layer-name" style="color: var(--blue);">Gateway Layer</div>
+            <div class="arch-layer-tech">Spring Boot 3 · JWT · Spring Security · WebSocket (STOMP) · REST API</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer" style="border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.06);">
+          <div class="arch-layer-icon" style="background: rgba(239,68,68,0.15);">📨</div>
+          <div>
+            <div class="arch-layer-name" style="color: var(--red);">Event Bus</div>
+            <div class="arch-layer-tech">Apache Kafka · Topics: task.new / task.result / agent.log</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer" style="border-color: rgba(6,214,160,0.3); background: rgba(6,214,160,0.06);">
+          <div class="arch-layer-icon" style="background: rgba(6,214,160,0.15);">🤖</div>
+          <div>
+            <div class="arch-layer-name" style="color: var(--accent3);">Orchestrator + Agents</div>
+            <div class="arch-layer-tech">FastAPI · LangGraph · CrewAI · 5 Specialized Agents · Groq API</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer" style="border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.06);">
+          <div class="arch-layer-icon" style="background: rgba(245,158,11,0.15);">🔌</div>
+          <div>
+            <div class="arch-layer-name" style="color: var(--accent4);">MCP Tool Layer</div>
+            <div class="arch-layer-tech">GitHub MCP · Drive MCP · Calendar MCP · Browser MCP · Gmail MCP</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer" style="border-color: rgba(100,100,120,0.4); background: rgba(100,100,120,0.06);">
+          <div class="arch-layer-icon" style="background: rgba(100,100,120,0.15);">🗄️</div>
+          <div>
+            <div class="arch-layer-name">Data Layer</div>
+            <div class="arch-layer-tech">PostgreSQL · Redis (Upstash) · ChromaDB (Vector) · MLflow</div>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer" style="border-color: rgba(34,211,238,0.3); background: rgba(34,211,238,0.06);">
+          <div class="arch-layer-icon" style="background: rgba(34,211,238,0.15);">⚡</div>
+          <div>
+            <div class="arch-layer-name" style="color: var(--cyan);">AI Model Layer (Free)</div>
+            <div class="arch-layer-tech">Groq (Llama 3.1, Mixtral) · HuggingFace Inference · Gemma · DeepSeek</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title" style="font-size:13px; color: var(--muted); font-weight:500; margin-bottom:12px;">SPRING BOOT — WHY IT'S THE MAIN BACKEND</div>
+          <ul class="checklist">
+            <li>Handles all HTTP/WebSocket connections from frontend</li>
+            <li>JWT authentication — every API call is verified here</li>
+            <li>Rate limiting — prevents API abuse</li>
+            <li>Kafka producer — pushes tasks as events to agents</li>
+            <li>Kafka consumer — receives agent results and pushes to UI via WebSocket</li>
+            <li>User management, task history in PostgreSQL via JPA</li>
+            <li>Swagger UI auto-generated for all endpoints</li>
+            <li>Deployed independently on Render as a Docker container</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size:13px; color: var(--muted); font-weight:500; margin-bottom:12px;">KAFKA — WHY NOT DIRECT HTTP CALLS</div>
+          <ul class="checklist">
+            <li>Agents are async — they don't block each other</li>
+            <li>Spring Boot doesn't wait for AI to finish — it just publishes an event</li>
+            <li>Agents can fail and retry without losing the message</li>
+            <li>Multiple agents can consume the same task independently</li>
+            <li>Perfect audit trail — every agent action is an event</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ AGENTS -->
+<section id="agents">
+  <div class="container">
+    <div class="section-label">03 · Agent System</div>
+    <h2 class="section-title">5 Autonomous Agents</h2>
+    <p class="section-desc">Each agent has a single clear responsibility, its own set of tools via MCP, and communicates through the LangGraph state machine. Agents run in parallel when possible.</p>
+
+    <div class="grid-3" style="margin-bottom:36px;">
+      <div class="agent-card agent-research">
+        <div class="agent-icon">🔍</div>
+        <div class="agent-name">Research Agent</div>
+        <div class="agent-desc">Searches web, reads PDFs, scrapes GitHub repos, and synthesizes information into structured notes using RAG pipeline with hybrid search.</div>
+        <div class="agent-tools">
+          <span class="badge badge-purple">Tavily Search API</span>
+          <span class="badge badge-purple">PDF Parser</span>
+          <span class="badge badge-purple">Browser MCP</span>
+          <span class="badge badge-purple">ChromaDB</span>
+        </div>
+      </div>
+
+      <div class="agent-card agent-memory">
+        <div class="agent-icon">🧠</div>
+        <div class="agent-name">Memory Agent</div>
+        <div class="agent-desc">Maintains 4-layer memory: short-term (Redis), long-term (PostgreSQL), episodic (experience logs), semantic (ChromaDB vector store).</div>
+        <div class="agent-tools">
+          <span class="badge badge-blue">Redis</span>
+          <span class="badge badge-blue">ChromaDB</span>
+          <span class="badge badge-blue">PostgreSQL</span>
+          <span class="badge badge-blue">HF Embeddings</span>
+        </div>
+      </div>
+
+      <div class="agent-card agent-coding">
+        <div class="agent-icon">💻</div>
+        <div class="agent-name">Coding Agent</div>
+        <div class="agent-desc">Finds practice repos, reviews code, opens GitHub issues, generates code snippets, creates practice exercises from topics identified by Research Agent.</div>
+        <div class="agent-tools">
+          <span class="badge badge-green">GitHub MCP</span>
+          <span class="badge badge-green">Code Executor</span>
+          <span class="badge badge-green">Groq API</span>
+        </div>
+      </div>
+
+      <div class="agent-card agent-planner">
+        <div class="agent-icon">📅</div>
+        <div class="agent-name">Planner Agent</div>
+        <div class="agent-desc">Decomposes goals into tasks, creates day-by-day study schedules, writes events to Google Calendar via MCP, generates quizzes and tracks milestones.</div>
+        <div class="agent-tools">
+          <span class="badge badge-amber">Calendar MCP</span>
+          <span class="badge badge-amber">Drive MCP</span>
+          <span class="badge badge-amber">Task DB</span>
+        </div>
+      </div>
+
+      <div class="agent-card agent-monitor">
+        <div class="agent-icon">📊</div>
+        <div class="agent-name">Monitor Agent</div>
+        <div class="agent-desc">The self-improving agent. Evaluates output quality, scores task completion, identifies failure modes, fixes mistakes, and retries with improved prompts. Feeds data to MLflow.</div>
+        <div class="agent-tools">
+          <span class="badge badge-pink">MLflow</span>
+          <span class="badge badge-pink">Self-Eval Loop</span>
+          <span class="badge badge-pink">Prometheus</span>
+        </div>
+      </div>
+
+      <!-- LangGraph orchestrator -->
+      <div class="card" style="border-color: rgba(6,214,160,0.25); background: rgba(6,214,160,0.04);">
+        <div class="card-title" style="color: var(--accent3);">🕸 LangGraph Orchestrator</div>
+        <div class="card-body" style="margin-bottom:12px;">Routes tasks to the right agents, manages shared state, handles parallel execution, and collects all agent results into a unified response.</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="badge badge-green">State Machine</span>
+          <span class="badge badge-green">Parallel Execution</span>
+          <span class="badge badge-green">Error Routing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Self-improving loop -->
+    <div class="section-label" style="margin-bottom:12px;">Self-Improving Agent Loop</div>
+    <div class="loop-steps">
+      <div class="loop-step">
+        <div class="loop-step-icon">📝</div>
+        <div class="loop-step-name">Task Received</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="loop-step-icon">⚡</div>
+        <div class="loop-step-name">Execute</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="loop-step-icon">🔎</div>
+        <div class="loop-step-name">Evaluate Output</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="loop-step-icon">🐛</div>
+        <div class="loop-step-name">Diagnose Failure</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="loop-step-icon">🔧</div>
+        <div class="loop-step-name">Fix Prompt / Tool</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="loop-step-icon">🔁</div>
+        <div class="loop-step-name">Retry</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step" style="border-color: rgba(6,214,160,0.3); background: rgba(6,214,160,0.08);">
+        <div class="loop-step-icon">✅</div>
+        <div class="loop-step-name">Success</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ TECH STACK -->
+<section id="techstack">
+  <div class="container">
+    <div class="section-label">04 · Tech Stack (All Free)</div>
+    <h2 class="section-title">Complete Technology Stack</h2>
+    <p class="section-desc">Every tool listed here has a free tier sufficient for building and running this project. No credit card required for the core system.</p>
+
+    <!-- Frontend -->
+    <div style="margin-bottom:28px;">
+      <div style="font-size:13px; font-weight:600; color:var(--accent2); margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">Frontend</div>
+      <div class="table-wrap">
+        <table class="tech-table">
+          <thead><tr><th>Technology</th><th>Role</th><th>Free Tier</th><th>Deploy</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tech-name">Next.js 14 <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">React framework, SSR, API routes</td><td style="color:var(--accent3);">Unlimited</td><td>Vercel</td></tr>
+            <tr><td><div class="tech-name">TailwindCSS <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Utility-first styling</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+            <tr><td><div class="tech-name">Zustand <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Global state management</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+            <tr><td><div class="tech-name">Socket.io Client <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Real-time agent status updates</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Backend - Spring Boot -->
+    <div style="margin-bottom:28px;">
+      <div style="font-size:13px; font-weight:600; color:var(--blue); margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">Core Backend — Spring Boot (Java)</div>
+      <div class="table-wrap">
+        <table class="tech-table">
+          <thead><tr><th>Technology</th><th>Role</th><th>Free Tier</th><th>Deploy</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tech-name">Spring Boot 3 <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Main REST API gateway</td><td style="color:var(--accent3);">Open source</td><td>Render</td></tr>
+            <tr><td><div class="tech-name">Spring Security + JWT <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Auth, rate limiting</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+            <tr><td><div class="tech-name">Spring WebSocket (STOMP) <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Push agent results to UI</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+            <tr><td><div class="tech-name">Spring Data JPA + Hibernate <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">PostgreSQL ORM</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+            <tr><td><div class="tech-name">Spring Kafka <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Kafka producer/consumer</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+            <tr><td><div class="tech-name">SpringDoc OpenAPI <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Auto Swagger UI docs</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Agent Layer - Python -->
+    <div style="margin-bottom:28px;">
+      <div style="font-size:13px; font-weight:600; color:var(--accent3); margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">Agent Layer — Python</div>
+      <div class="table-wrap">
+        <table class="tech-table">
+          <thead><tr><th>Technology</th><th>Role</th><th>Free Tier</th><th>Deploy</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tech-name">FastAPI <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Async Python API, Kafka consumer</td><td style="color:var(--accent3);">Open source</td><td>Render / HF Spaces</td></tr>
+            <tr><td><div class="tech-name">LangGraph <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Stateful multi-agent orchestration</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+            <tr><td><div class="tech-name">CrewAI <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Role-based agent definitions</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+            <tr><td><div class="tech-name">LangChain <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">RAG pipeline, tool chains</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+            <tr><td><div class="tech-name">LlamaIndex <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">PDF + doc indexing</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+            <tr><td><div class="tech-name">FastMCP (Python) <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Build MCP servers</td><td style="color:var(--accent3);">Open source</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- AI Models -->
+    <div style="margin-bottom:28px;">
+      <div style="font-size:13px; font-weight:600; color:var(--cyan); margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">AI Models — Free APIs (No Local Models Needed)</div>
+      <div class="table-wrap">
+        <table class="tech-table">
+          <thead><tr><th>Provider</th><th>Models Available</th><th>Free Limit</th><th>Use As</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tech-name">🟢 Groq API <span class="free-tag">PRIMARY</span></div></td><td style="color:var(--muted);">Llama 3.1 70B, Mixtral 8x7B, Gemma 7B</td><td style="color:var(--accent3);">14,400 req/day</td><td>Main LLM for all agents</td></tr>
+            <tr><td><div class="tech-name">🤗 HuggingFace Inference <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">DeepSeek, Qwen, Phi-3, sentence-transformers</td><td style="color:var(--accent3);">Serverless free tier</td><td>Embeddings + Fallback LLM</td></tr>
+            <tr><td><div class="tech-name">Together AI <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Llama, Mistral, Qwen</td><td style="color:var(--accent3);">$25 free credits</td><td>Overflow backup</td></tr>
+            <tr><td><div class="tech-name">Cohere <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Command R, Embed</td><td style="color:var(--accent3);">1000 calls/month</td><td>Embeddings for RAG</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Data Layer -->
+    <div style="margin-bottom:28px;">
+      <div style="font-size:13px; font-weight:600; color:var(--accent4); margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">Data & Storage Layer</div>
+      <div class="table-wrap">
+        <table class="tech-table">
+          <thead><tr><th>Technology</th><th>Role</th><th>Free Tier</th><th>Provider</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tech-name">PostgreSQL <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Main DB: users, tasks, history</td><td style="color:var(--accent3);">Render free / Supabase 500MB</td><td>Render or Supabase</td></tr>
+            <tr><td><div class="tech-name">Redis <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Agent short-term memory, caching</td><td style="color:var(--accent3);">Upstash — 10K req/day</td><td>Upstash</td></tr>
+            <tr><td><div class="tech-name">ChromaDB <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Vector store for RAG embeddings</td><td style="color:var(--accent3);">Open source, self-hosted</td><td>Render Docker</td></tr>
+            <tr><td><div class="tech-name">Apache Kafka <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Agent event streaming</td><td style="color:var(--accent3);">Confluent Cloud 5GB/month</td><td>Confluent Cloud</td></tr>
+            <tr><td><div class="tech-name">MLflow <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Agent experiment tracking, model registry</td><td style="color:var(--accent3);">Open source, self-hosted</td><td>Render</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DevOps -->
+    <div style="margin-bottom:0;">
+      <div style="font-size:13px; font-weight:600; color:var(--accent5); margin-bottom:10px; text-transform:uppercase; letter-spacing:1px;">DevOps & Monitoring</div>
+      <div class="table-wrap">
+        <table class="tech-table">
+          <thead><tr><th>Technology</th><th>Role</th><th>Free Tier</th></tr></thead>
+          <tbody>
+            <tr><td><div class="tech-name">Docker <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Containerize all services</td><td style="color:var(--accent3);">Docker Hub free</td></tr>
+            <tr><td><div class="tech-name">GitHub Actions <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">CI/CD pipeline: test → build → deploy</td><td style="color:var(--accent3);">2000 min/month</td></tr>
+            <tr><td><div class="tech-name">Prometheus <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Metrics collection</td><td style="color:var(--accent3);">Open source</td></tr>
+            <tr><td><div class="tech-name">Grafana Cloud <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Dashboards and alerting</td><td style="color:var(--accent3);">Free tier up to 10k series</td></tr>
+            <tr><td><div class="tech-name">DVC <span class="free-tag">FREE</span></div></td><td style="color:var(--muted);">Data versioning for eval sets</td><td style="color:var(--accent3);">Open source</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ WORKFLOW -->
+<section id="workflow">
+  <div class="container">
+    <div class="section-label">05 · End-to-End Workflow</div>
+    <h2 class="section-title">What Happens Step by Step</h2>
+    <p class="section-desc">Tracing one user request — "Prepare me for my Data Science interview" — through every layer of the system from click to output.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+      <div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background: var(--accent2);"></div>
+            <div class="week-header"><span class="week-num">STEP 01</span><span class="week-title" style="font-size:15px;">User Input</span></div>
+            <div class="flow-content">
+              <div class="flow-detail">User types or speaks: <em style="color:var(--accent2);">"Prepare me for my Data Science interview"</em>. Next.js frontend sends a REST POST to Spring Boot gateway with JWT token attached.</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background: var(--blue);"></div>
+            <div class="week-header"><span class="week-num">STEP 02</span><span class="week-title" style="font-size:15px;">Gateway Processing</span></div>
+            <div class="flow-content">
+              <div class="flow-detail">Spring Boot verifies JWT, rate-checks the user, creates a Task record in PostgreSQL (status: PENDING), and publishes event to Kafka topic <code style="font-family:var(--font-mono); font-size:11px; color:var(--accent4); background:var(--surface2); padding:1px 5px; border-radius:3px;">task.new</code>. Returns task ID to frontend immediately — no waiting for AI.</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background: var(--red);"></div>
+            <div class="week-header"><span class="week-num">STEP 03</span><span class="week-title" style="font-size:15px;">Kafka Event</span></div>
+            <div class="flow-content">
+              <div class="flow-detail">Kafka delivers the event to FastAPI Python consumer. Frontend opens a WebSocket subscription to receive real-time updates on this task ID.</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background: var(--accent3);"></div>
+            <div class="week-header"><span class="week-num">STEP 04</span><span class="week-title" style="font-size:15px;">LangGraph Orchestration</span></div>
+            <div class="flow-content">
+              <div class="flow-detail">LangGraph decomposes the task into sub-tasks and launches all 5 agents. Memory Agent checks prior history first. Agents run in parallel where possible. Each agent result is an intermediate state update.</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background: var(--accent4);"></div>
+            <div class="week-header"><span class="week-num">STEP 05</span><span class="week-title" style="font-size:15px;">Agent Execution</span></div>
+            <div class="flow-content">
+              <div class="flow-detail">Research Agent hits Tavily API + PDF store. Planner Agent calls Calendar MCP. Coding Agent queries GitHub MCP. All agents call Groq API (Llama 3.1 70B) for reasoning. Monitor Agent scores each output against quality rubric.</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background: var(--cyan);"></div>
+            <div class="week-header"><span class="week-num">STEP 06</span><span class="week-title" style="font-size:15px;">Result Streaming</span></div>
+            <div class="flow-content">
+              <div class="flow-detail">Each agent publishes results to Kafka topic <code style="font-family:var(--font-mono); font-size:11px; color:var(--accent4); background:var(--surface2); padding:1px 5px; border-radius:3px;">task.result</code>. Spring Boot consumes and pushes to frontend via WebSocket STOMP. User sees sections appear live as agents finish.</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background: var(--accent3);"></div>
+            <div class="week-header"><span class="week-num">STEP 07</span><span class="week-title" style="font-size:15px;">Final Output</span></div>
+            <div class="flow-content">
+              <div class="flow-detail">User receives: 7-day study roadmap + 20 practice questions + GitHub repos + calendar events already created + topic notes saved to Drive. Memory Agent stores this session for future reference.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title" style="font-size:13px; color:var(--muted);">KAFKA TOPICS USED</div>
+          <div style="font-family:var(--font-mono); font-size:12.5px; color:var(--text); line-height:2;">
+            <div><span style="color:var(--accent4);">task.new</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ Spring Boot → FastAPI</div>
+            <div><span style="color:var(--accent4);">task.result</span> &nbsp;&nbsp;&nbsp;&nbsp;→ FastAPI → Spring Boot</div>
+            <div><span style="color:var(--accent4);">agent.log</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ All agents → MLflow</div>
+            <div><span style="color:var(--accent4);">agent.retry</span> &nbsp;&nbsp;&nbsp;&nbsp;→ Monitor → Any Agent</div>
+            <div><span style="color:var(--accent4);">memory.update</span> &nbsp;→ Memory Agent → ChromaDB</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title" style="font-size:13px; color:var(--muted);">MCP CALLS PER AGENT</div>
+          <div style="font-size:13px; color:var(--muted); line-height:2;">
+            <div>Research Agent &nbsp;&nbsp;&nbsp;→ <span style="color:var(--text);">Browser MCP + Drive MCP</span></div>
+            <div>Coding Agent &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <span style="color:var(--text);">GitHub MCP</span></div>
+            <div>Planner Agent &nbsp;&nbsp;&nbsp;&nbsp;→ <span style="color:var(--text);">Calendar MCP + Drive MCP</span></div>
+            <div>Memory Agent &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <span style="color:var(--text);">Drive MCP (notes)</span></div>
+            <div>Monitor Agent &nbsp;&nbsp;&nbsp;&nbsp;→ <span style="color:var(--text);">Gmail MCP (reports)</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title" style="font-size:13px; color:var(--muted);">RAG PIPELINE DETAIL</div>
+          <div class="timeline" style="padding-left:20px; padding-top:4px;">
+            <div class="timeline-item" style="margin-bottom:16px;">
+              <div class="timeline-dot" style="background:var(--accent); left:-16px; top:5px; width:10px; height:10px;"></div>
+              <div class="flow-detail" style="padding-bottom:0;"><strong style="font-size:13px;">1. Ingest</strong><br/><span style="font-size:12px;">PDF/web content → chunked → embedded via HuggingFace sentence-transformers</span></div>
+            </div>
+            <div class="timeline-item" style="margin-bottom:16px;">
+              <div class="timeline-dot" style="background:var(--accent3); left:-16px; top:5px; width:10px; height:10px;"></div>
+              <div class="flow-detail" style="padding-bottom:0;"><strong style="font-size:13px;">2. Store</strong><br/><span style="font-size:12px;">Vectors → ChromaDB. Metadata → PostgreSQL. Keywords → BM25 index</span></div>
+            </div>
+            <div class="timeline-item" style="margin-bottom:16px;">
+              <div class="timeline-dot" style="background:var(--accent4); left:-16px; top:5px; width:10px; height:10px;"></div>
+              <div class="flow-detail" style="padding-bottom:0;"><strong style="font-size:13px;">3. Retrieve</strong><br/><span style="font-size:12px;">Hybrid: dense (cosine similarity) + sparse (BM25) → RRF fusion re-ranking</span></div>
+            </div>
+            <div class="timeline-item" style="margin-bottom:0;">
+              <div class="timeline-dot" style="background:var(--cyan); left:-16px; top:5px; width:10px; height:10px;"></div>
+              <div class="flow-detail" style="padding-bottom:0;"><strong style="font-size:13px;">4. Generate</strong><br/><span style="font-size:12px;">Top-k chunks → Groq (Llama 3.1 70B) → structured answer with citations</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ MCP -->
+<section>
+  <div class="container">
+    <div class="section-label">06 · Model Context Protocol</div>
+    <h2 class="section-title">MCP Servers — How Agents Use Tools</h2>
+    <p class="section-desc">MCP is the protocol that lets agents talk to real external services. Each MCP server exposes a clean interface — agents call tools, get results, and use them to reason.</p>
+
+    <div class="grid-3" style="margin-bottom:28px;">
+      <div class="mcp-card">
+        <div style="font-size:28px;">🐙</div>
+        <div class="mcp-name">GitHub MCP Server</div>
+        <ul class="mcp-capabilities">
+          <li>Read repositories and file trees</li>
+          <li>Create and list issues</li>
+          <li>Open pull requests</li>
+          <li>Review code and suggest changes</li>
+          <li>Search code by query</li>
+        </ul>
+      </div>
+      <div class="mcp-card">
+        <div style="font-size:28px;">📁</div>
+        <div class="mcp-name">Google Drive MCP Server</div>
+        <ul class="mcp-capabilities">
+          <li>Read and parse PDF files</li>
+          <li>Search documents by keyword</li>
+          <li>Create new docs and folders</li>
+          <li>Summarize large documents</li>
+        </ul>
+      </div>
+      <div class="mcp-card">
+        <div style="font-size:28px;">📅</div>
+        <div class="mcp-name">Google Calendar MCP</div>
+        <ul class="mcp-capabilities">
+          <li>Create study session events</li>
+          <li>List upcoming schedule</li>
+          <li>Update or cancel events</li>
+          <li>Set reminders for milestones</li>
+        </ul>
+      </div>
+      <div class="mcp-card">
+        <div style="font-size:28px;">🌐</div>
+        <div class="mcp-name">Browser MCP Server</div>
+        <ul class="mcp-capabilities">
+          <li>Navigate to any URL</li>
+          <li>Scrape page content</li>
+          <li>Take screenshots</li>
+          <li>Fill forms and click buttons</li>
+          <li>Extract structured data</li>
+        </ul>
+      </div>
+      <div class="mcp-card">
+        <div style="font-size:28px;">✉️</div>
+        <div class="mcp-name">Gmail MCP Server</div>
+        <ul class="mcp-capabilities">
+          <li>Read emails by thread</li>
+          <li>Send progress reports</li>
+          <li>Search inbox by query</li>
+          <li>Create draft responses</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color: rgba(6,214,160,0.2);">
+        <div class="card-title" style="font-size:14px; color:var(--accent3);">How to Build an MCP Server</div>
+        <div class="code-block" style="padding:14px; font-size:11.5px; margin-top:10px;">
+<span class="code-keyword">from</span> fastmcp <span class="code-keyword">import</span> FastMCP
+
+mcp = FastMCP(<span class="code-string">"github-mcp"</span>)
+
+<span class="code-fn">@mcp.tool</span>()
+<span class="code-keyword">async def</span> <span class="code-fn">read_repo</span>(owner: str, repo: str):
+    <span class="code-comment"># Call GitHub API</span>
+    <span class="code-keyword">return</span> github_client.get_repo(owner, repo)
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ MEMORY -->
+<section>
+  <div class="container">
+    <div class="section-label">07 · Agent Memory System</div>
+    <h2 class="section-title">4-Layer Memory Architecture</h2>
+    <p class="section-desc">What makes this research-grade: a multi-layer memory system that lets agents remember what you learned last week, how you performed on quizzes, and what you already know — without being told again.</p>
+
+    <div class="grid-4" style="margin-bottom:28px;">
+      <div class="memory-type" data-icon="⚡" style="border-color: rgba(59,130,246,0.25);">
+        <div class="memory-name">Short-Term</div>
+        <div class="memory-tech">Redis · Upstash</div>
+        <div class="memory-desc">Current conversation context, last 10 messages, active task state. Expires after session ends (sliding window).</div>
+      </div>
+      <div class="memory-type" data-icon="🗄️" style="border-color: rgba(124,106,247,0.25);">
+        <div class="memory-name">Long-Term</div>
+        <div class="memory-tech">PostgreSQL + ChromaDB</div>
+        <div class="memory-desc">User preferences, topic mastery scores, study history across sessions. Persists indefinitely. Queried before each task.</div>
+      </div>
+      <div class="memory-type" data-icon="📖" style="border-color: rgba(245,158,11,0.25);">
+        <div class="memory-name">Episodic</div>
+        <div class="memory-tech">PostgreSQL Events Table</div>
+        <div class="memory-desc">Logs of what the agent did, what worked, what failed. Enables the self-improving loop. Feeds MLflow experiments.</div>
+      </div>
+      <div class="memory-type" data-icon="🧩" style="border-color: rgba(6,214,160,0.25);">
+        <div class="memory-name">Semantic</div>
+        <div class="memory-tech">ChromaDB Collections</div>
+        <div class="memory-desc">Knowledge embeddings: concepts the user has learned, topic relationships, source documents. Used in every RAG query.</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+<span class="code-comment"># Memory Agent — query flow before every agent action</span>
+<span class="code-keyword">async def</span> <span class="code-fn">retrieve_context</span>(user_id: str, query: str):
+    <span class="code-comment"># 1. Short-term: get recent context from Redis</span>
+    recent = <span class="code-keyword">await</span> redis.get(<span class="code-string">f"session:{user_id}:context"</span>)
+    
+    <span class="code-comment"># 2. Semantic: vector search ChromaDB for relevant knowledge</span>
+    semantic = chromadb.query(query_embeddings=[embed(query)], n_results=<span class="code-type">5</span>)
+    
+    <span class="code-comment"># 3. Episodic: fetch past experiences for this task type</span>
+    episodes = db.query(<span class="code-string">"SELECT * FROM episodes WHERE task_type=? ORDER BY timestamp DESC LIMIT 3"</span>)
+    
+    <span class="code-comment"># 4. Long-term: user mastery profile</span>
+    profile = db.query(<span class="code-string">"SELECT * FROM user_mastery WHERE user_id=?"</span>, user_id)
+    
+    <span class="code-keyword">return</span> merge_context(recent, semantic, episodes, profile)
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ 8 WEEK PLAN -->
+<section id="plan">
+  <div class="container">
+    <div class="section-label">08 · Build Plan</div>
+    <h2 class="section-title">8-Week Step-by-Step Plan</h2>
+    <p class="section-desc">Divided into two cohesive parts. Each week has a clear deliverable. By end of week 8, NeuroVerse is fully deployed and documented.</p>
+
+    <!-- PART 1 -->
+    <div class="part-banner">
+      <div class="part-num">P1</div>
+      <div>
+        <div class="part-info-label">Weeks 1–4</div>
+        <div class="part-info-title">Foundation & Core Agent System</div>
+        <div class="part-info-desc">Set up the entire infrastructure, build Spring Boot gateway, connect Kafka, implement all 5 agents through LangGraph, build MCP servers, and wire up RAG. By end of week 4, the system works end-to-end for a basic task.</div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <!-- Week 1 -->
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background: var(--accent2); width:16px; height:16px; left:-30px;"></div>
+        <div class="week-header">
+          <span class="week-num">WEEK 01</span>
+          <span class="week-title">Project Setup + Spring Boot Gateway</span>
+          <span class="badge badge-purple">Foundation</span>
+        </div>
+        <div class="week-tasks">
+          <div class="task-item"><div class="task-check">1</div><div class="task-text">Create GitHub monorepo: <code style="font-family:var(--font-mono); font-size:12px;">/frontend</code>, <code style="font-family:var(--font-mono); font-size:12px;">/backend-gateway</code>, <code style="font-family:var(--font-mono); font-size:12px;">/agent-service</code>, <code style="font-family:var(--font-mono); font-size:12px;">/mcp-servers</code></div></div>
+          <div class="task-item"><div class="task-check">2</div><div class="task-text">Initialize Next.js 14 app with TailwindCSS, Zustand, Socket.io client. Build basic chat UI with task input.</div></div>
+          <div class="task-item"><div class="task-check">3</div><div class="task-text">Initialize Spring Boot 3 (Java 17). Add: Spring Security, JWT, JPA, Swagger (SpringDoc OpenAPI), Spring Web.</div></div>
+          <div class="task-item"><div class="task-check">4</div><div class="task-text">Connect Spring Boot to PostgreSQL (Supabase free). Create tables: <code style="font-family:var(--font-mono); font-size:12px;">users</code>, <code style="font-family:var(--font-mono); font-size:12px;">tasks</code>, <code style="font-family:var(--font-mono); font-size:12px;">task_results</code>.</div></div>
+          <div class="task-item"><div class="task-check">5</div><div class="task-text">Implement JWT auth: <code style="font-family:var(--font-mono); font-size:12px;">POST /auth/register</code>, <code style="font-family:var(--font-mono); font-size:12px;">POST /auth/login</code>. Protect all task endpoints.</div></div>
+          <div class="task-item"><div class="task-check">6</div><div class="task-text">Deploy Spring Boot to Render (free Docker container). Deploy Next.js to Vercel. Connect frontend → backend via REST. Confirm login works E2E.</div></div>
+          <div class="task-item"><div class="task-check">7</div><div class="task-text">Set up GitHub Actions: on push → run tests → build Docker image → deploy to Render automatically.</div></div>
+        </div>
+      </div>
+
+      <!-- Week 2 -->
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background: var(--red); width:16px; height:16px; left:-30px;"></div>
+        <div class="week-header">
+          <span class="week-num">WEEK 02</span>
+          <span class="week-title">Kafka Event Bus + Python FastAPI Service</span>
+          <span class="badge badge-red">Event Streaming</span>
+        </div>
+        <div class="week-tasks">
+          <div class="task-item"><div class="task-check">1</div><div class="task-text">Set up Confluent Cloud (free 5GB). Create Kafka topics: <code style="font-family:var(--font-mono); font-size:12px;">task.new</code>, <code style="font-family:var(--font-mono); font-size:12px;">task.result</code>, <code style="font-family:var(--font-mono); font-size:12px;">agent.log</code>, <code style="font-family:var(--font-mono); font-size:12px;">agent.retry</code>.</div></div>
+          <div class="task-item"><div class="task-check">2</div><div class="task-text">Add Spring Kafka dependency to Spring Boot. Build KafkaProducerService: publishes task events when user submits a request.</div></div>
+          <div class="task-item"><div class="task-check">3</div><div class="task-text">Initialize FastAPI Python service. Add aiokafka consumer. When message arrives on <code style="font-family:var(--font-mono); font-size:12px;">task.new</code>, log it and return a mock response to <code style="font-family:var(--font-mono); font-size:12px;">task.result</code>.</div></div>
+          <div class="task-item"><div class="task-check">4</div><div class="task-text">Add Spring WebSocket (STOMP) to Spring Boot. Subscribe Spring Kafka consumer to <code style="font-family:var(--font-mono); font-size:12px;">task.result</code> → push to WebSocket topic <code style="font-family:var(--font-mono); font-size:12px;">/topic/task/{taskId}</code>.</div></div>
+          <div class="task-item"><div class="task-check">5</div><div class="task-text">Add Redis (Upstash free) to Spring Boot for rate limiting and to FastAPI for session state. Test connection.</div></div>
+          <div class="task-item"><div class="task-check">6</div><div class="task-text">Connect frontend WebSocket subscription to task updates. Test full pipeline: UI input → Spring Boot → Kafka → FastAPI → Kafka → Spring Boot → WebSocket → UI. Confirm end-to-end with mock data.</div></div>
+        </div>
+      </div>
+
+      <!-- Week 3 -->
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background: var(--accent3); width:16px; height:16px; left:-30px;"></div>
+        <div class="week-header">
+          <span class="week-num">WEEK 03</span>
+          <span class="week-title">5 Core Agents via LangGraph + CrewAI</span>
+          <span class="badge badge-green">Agent Layer</span>
+        </div>
+        <div class="week-tasks">
+          <div class="task-item"><div class="task-check">1</div><div class="task-text">Install LangGraph + CrewAI + Groq SDK in Python service. Add Groq API key as environment variable.</div></div>
+          <div class="task-item"><div class="task-check">2</div><div class="task-text">Build Research Agent: define role + goal in CrewAI. Tools: Tavily search API (free tier), PDF reader (pypdf). Connect to Groq Llama 3.1 70B as LLM.</div></div>
+          <div class="task-item"><div class="task-check">3</div><div class="task-text">Build Coding Agent: GitHub API integration. Tools: search_repos, get_file, list_issues. Uses Groq for code review logic.</div></div>
+          <div class="task-item"><div class="task-check">4</div><div class="task-text">Build Planner Agent: task decomposition. Takes research output and creates a structured daily study plan. Outputs structured JSON (days, topics, time per topic).</div></div>
+          <div class="task-item"><div class="task-check">5</div><div class="task-text">Build Memory Agent skeleton: reads from Redis (short-term) and returns prior user context. Full multi-layer memory comes in Part 2.</div></div>
+          <div class="task-item"><div class="task-check">6</div><div class="task-text">Build Monitor Agent: basic quality scoring. After each agent runs, score output 0–10 on relevance + completeness. Log score to PostgreSQL.</div></div>
+          <div class="task-item"><div class="task-check">7</div><div class="task-text">Wire all agents into LangGraph state machine. Define graph nodes + edges. Test with the DS interview use case. Publish combined output to Kafka <code style="font-family:var(--font-mono); font-size:12px;">task.result</code>.</div></div>
+        </div>
+      </div>
+
+      <!-- Week 4 -->
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background: var(--accent4); width:16px; height:16px; left:-30px;"></div>
+        <div class="week-header">
+          <span class="week-num">WEEK 04</span>
+          <span class="week-title">MCP Servers + RAG Pipeline</span>
+          <span class="badge badge-amber">MCP + RAG</span>
+        </div>
+        <div class="week-tasks">
+          <div class="task-item"><div class="task-check">1</div><div class="task-text">Build GitHub MCP Server using FastMCP. Expose tools: <code style="font-family:var(--font-mono); font-size:12px;">read_repo</code>, <code style="font-family:var(--font-mono); font-size:12px;">search_code</code>, <code style="font-family:var(--font-mono); font-size:12px;">create_issue</code>, <code style="font-family:var(--font-mono); font-size:12px;">open_pr</code>. Connect Coding Agent to it.</div></div>
+          <div class="task-item"><div class="task-check">2</div><div class="task-text">Build Calendar MCP Server. Tools: <code style="font-family:var(--font-mono); font-size:12px;">create_event</code>, <code style="font-family:var(--font-mono); font-size:12px;">list_events</code>, <code style="font-family:var(--font-mono); font-size:12px;">delete_event</code> using Google Calendar API (free). Connect Planner Agent.</div></div>
+          <div class="task-item"><div class="task-check">3</div><div class="task-text">Build Browser MCP using Playwright. Tools: <code style="font-family:var(--font-mono); font-size:12px;">navigate</code>, <code style="font-family:var(--font-mono); font-size:12px;">extract_text</code>, <code style="font-family:var(--font-mono); font-size:12px;">screenshot</code>. Connect Research Agent.</div></div>
+          <div class="task-item"><div class="task-check">4</div><div class="task-text">Set up ChromaDB on Render (Docker). Create collections: <code style="font-family:var(--font-mono); font-size:12px;">documents</code>, <code style="font-family:var(--font-mono); font-size:12px;">user_knowledge</code>. Add HuggingFace sentence-transformers for embeddings.</div></div>
+          <div class="task-item"><div class="task-check">5</div><div class="task-text">Build RAG pipeline: LangChain document loader → text splitter → embed → store in ChromaDB. Build hybrid retrieval: dense (chromadb) + sparse (BM25 via rank_bm25) → RRF fusion.</div></div>
+          <div class="task-item"><div class="task-check">6</div><div class="task-text">Connect Research Agent to RAG pipeline. Test full flow: DS interview query → web search + PDF → embed → retrieve → Groq → structured notes.</div></div>
+          <div class="task-item"><div class="task-check">7</div><div class="task-text"><strong>PART 1 MILESTONE:</strong> Full end-to-end test. Input DS interview request → all 5 agents → MCP calls → RAG retrieval → calendar event created → output on UI via WebSocket. Demo video recorded.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="part-banner" style="margin-top:48px; background: linear-gradient(135deg, rgba(6,214,160,0.1) 0%, rgba(245,158,11,0.07) 100%); border-color: rgba(6,214,160,0.25);">
+      <div class="part-num" style="background: linear-gradient(135deg, var(--accent3), var(--accent4)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">P2</div>
+      <div>
+        <div class="part-info-label">Weeks 5–8</div>
+        <div class="part-info-title">Advanced Memory, Self-Improvement, Monitoring & Deployment</div>
+        <div class="part-info-desc">Build the multi-layer memory system, implement the self-improving agent loop, add MLflow experiment tracking, wire Prometheus + Grafana, Docker everything, and deploy the full production system. Write the research paper.</div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <!-- Week 5 -->
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background: var(--cyan); width:16px; height:16px; left:-30px;"></div>
+        <div class="week-header">
+          <span class="week-num">WEEK 05</span>
+          <span class="week-title">4-Layer Memory System (Research-Grade)</span>
+          <span class="badge badge-blue">Memory Architecture</span>
+        </div>
+        <div class="week-tasks">
+          <div class="task-item"><div class="task-check">1</div><div class="task-text">Design PostgreSQL schema for long-term memory: <code style="font-family:var(--font-mono); font-size:12px;">user_mastery(user_id, topic, score, last_reviewed)</code>, <code style="font-family:var(--font-mono); font-size:12px;">episodes(agent, task_type, input, output, quality_score, timestamp)</code>.</div></div>
+          <div class="task-item"><div class="task-check">2</div><div class="task-text">Implement short-term memory: Redis sliding window (last 10 exchanges per user). Auto-expire after 2 hours of inactivity.</div></div>
+          <div class="task-item"><div class="task-check">3</div><div class="task-text">Implement long-term memory: after each session, Memory Agent extracts key learnings and updates <code style="font-family:var(--font-mono); font-size:12px;">user_mastery</code> table with spaced-repetition scoring (SM-2 algorithm).</div></div>
+          <div class="task-item"><div class="task-check">4</div><div class="task-text">Implement episodic memory: every agent action → write to <code style="font-family:var(--font-mono); font-size:12px;">episodes</code> table via Kafka <code style="font-family:var(--font-mono); font-size:12px;">agent.log</code> topic. Monitor Agent reads this to learn what works.</div></div>
+          <div class="task-item"><div class="task-check">5</div><div class="task-text">Implement semantic memory: build dedicated ChromaDB collection per user. Embed all learned concepts. Memory Agent queries this before Research Agent runs — prevents redundant searches.</div></div>
+          <div class="task-item"><div class="task-check">6</div><div class="task-text">Build memory retrieval fusion: Memory Agent merges all 4 layers into a unified context object before passing to LangGraph. Test: run same query twice → second run should use cached knowledge.</div></div>
+        </div>
+      </div>
+
+      <!-- Week 6 -->
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background: var(--accent5); width:16px; height:16px; left:-30px;"></div>
+        <div class="week-header">
+          <span class="week-num">WEEK 06</span>
+          <span class="week-title">Self-Improving Agent + Quiz Generator + Progress Tracker</span>
+          <span class="badge badge-pink">Self-Improvement</span>
+        </div>
+        <div class="week-tasks">
+          <div class="task-item"><div class="task-check">1</div><div class="task-text">Build self-eval loop in Monitor Agent: after each task output, call Groq with evaluation prompt. Score: relevance (0–10), completeness (0–10), accuracy (0–10). If avg &lt; 7, flag for retry.</div></div>
+          <div class="task-item"><div class="task-check">2</div><div class="task-text">Build retry mechanism: Monitor Agent publishes to Kafka <code style="font-family:var(--font-mono); font-size:12px;">agent.retry</code> with failure diagnosis. LangGraph re-routes to the failed agent with an improved prompt based on the diagnosis.</div></div>
+          <div class="task-item"><div class="task-check">3</div><div class="task-text">Add MLflow experiment tracking: log every agent run as an MLflow experiment (params: model, prompt version, temperature; metrics: quality score, latency, tokens used).</div></div>
+          <div class="task-item"><div class="task-check">4</div><div class="task-text">Build quiz generator: after Research Agent finds topics, Planner Agent calls Groq with a structured prompt to generate 10 MCQs. Store in PostgreSQL. Serve via Spring Boot API.</div></div>
+          <div class="task-item"><div class="task-check">5</div><div class="task-text">Build progress tracker: when user answers quizzes, score is stored in <code style="font-family:var(--font-mono); font-size:12px;">user_mastery</code>. Frontend dashboard shows topic-by-topic mastery bars.</div></div>
+          <div class="task-item"><div class="task-check">6</div><div class="task-text">Add real-time WebSocket streaming: agents push partial results as they arrive. UI shows animated "agent thinking" indicators per agent type. User sees progress, not just final output.</div></div>
+        </div>
+      </div>
+
+      <!-- Week 7 -->
+      <div class="timeline-item">
+        <div class="timeline-dot" style="background: var(--accent4); width:16px; height:16px; left:-30px;"></div>
+        <div class="week-header">
+          <span class="week-num">WEEK 07</span>
+          <span class="week-title">DevOps, Docker, Monitoring + MLOps</span>
+          <span class="badge badge-amber">DevOps / MLOps</span>
+        </div>
+        <div class="week-tasks">
+          <div class="task-item"><div class="task-check">1</div><div class="task-text">Write Dockerfile for each service: <code style="font-family:var(--font-mono); font-size:12px;">gateway.Dockerfile</code>, <code style="font-family:var(--font-mono); font-size:12px;">agents.Dockerfile</code>, <code style="font-family:var(--font-mono); font-size:12px;">chromadb.Dockerfile</code>, <code style="font-family:var(--font-mono); font-size:12px;">mlflow.Dockerfile</code>.</div></div>
+          <div class="task-item"><div class="task-check">2</div><div class="task-text">Write <code style="font-family:var(--font-mono); font-size:12px;">docker-compose.yml</code> for local full-stack development. One command starts everything: <code style="font-family:var(--font-mono); font-size:12px;">docker-compose up</code>.</div></div>
+          <div class="task-item"><div class="task-check">3</div><div class="task-text">Add Prometheus metrics to Spring Boot (Micrometer + Actuator). Track: request latency, task completion rate, Kafka consumer lag, WebSocket connection count.</div></div>
+          <div class="task-item"><div class="task-check">4</div><div class="task-text">Add Prometheus metrics to FastAPI (prometheus-fastapi-instrumentator). Track: agent execution time, Groq API latency, retry count, memory hit rate.</div></div>
+          <div class="task-item"><div class="task-check">5</div><div class="task-text">Connect Grafana Cloud (free). Build dashboards: system health, agent performance, Kafka throughput, user activity. Set up alerts for agent failures.</div></div>
+          <div class="task-item"><div class="task-check">6</div><div class="task-text">Set up DVC for data versioning. Version the RAG document corpus and evaluation question sets. Push DVC metadata to GitHub, data to Google Drive (free).</div></div>
+          <div class="task-item"><div class="task-check">7</div><div class="task-text">Finalize GitHub Actions CI/CD: on PR merge → run unit tests (JUnit + pytest) → build Docker images → push to Docker Hub → deploy to Render via webhook → smoke test endpoint.</div></div>
+        </div>
+      </div>
+
+      <!-- Week 8 -->
+      <div class="timeline-item" style="margin-bottom:0;">
+        <div class="timeline-dot" style="background: var(--accent2); width:16px; height:16px; left:-30px;"></div>
+        <div class="week-header">
+          <span class="week-num">WEEK 08</span>
+          <span class="week-title">Final Polish, Deploy, Research Paper + Demo</span>
+          <span class="badge badge-purple">Ship It</span>
+        </div>
+        <div class="week-tasks">
+          <div class="task-item"><div class="task-check">1</div><div class="task-text">Final integration testing: run 10 different user queries through the full system. Log all failures. Fix top 5 issues.</div></div>
+          <div class="task-item"><div class="task-check">2</div><div class="task-text">Performance tuning: add Redis caching layer in FastAPI for repeated Groq calls. Tune Kafka partitions for parallel agent processing. Profile memory retrieval speed.</div></div>
+          <div class="task-item"><div class="task-check">3</div><div class="task-text">Deploy final stack: Vercel (frontend), Render (Spring Boot + FastAPI + ChromaDB + MLflow), HuggingFace Spaces (embedding model endpoint). Configure all env vars.</div></div>
+          <div class="task-item"><div class="task-check">4</div><div class="task-text">Write 4–6 page research paper: Abstract, Introduction, System Architecture, Memory Architecture, Self-Improving Loop, Evaluation Results (from MLflow), Future Work. Target IEEE or ACM format.</div></div>
+          <div class="task-item"><div class="task-check">5</div><div class="task-text">Record demo video (10 min): show login → input DS interview request → watch 5 agents work live → see calendar event created → quiz appears → review Grafana dashboard.</div></div>
+          <div class="task-item"><div class="task-check">6</div><div class="task-text">Polish GitHub README: architecture diagram, quick start guide, environment setup, API docs link (Swagger), demo video link, tech stack badges.</div></div>
+          <div class="task-item"><div class="task-check">7</div><div class="task-text">Open-source and submit. Add to portfolio. Write LinkedIn article about what you built and what you learned. Share GitHub link.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ DEPLOY -->
+<section id="deploy">
+  <div class="container">
+    <div class="section-label">09 · Deployment Strategy</div>
+    <h2 class="section-title">Deploying on Free Infrastructure</h2>
+    <p class="section-desc">Every service deployed on free tiers. No credit card required. The only cost is time.</p>
+
+    <div class="grid-3" style="margin-bottom:28px;">
+      <div class="deploy-card">
+        <div class="deploy-logo">▲</div>
+        <div class="deploy-name">Vercel</div>
+        <div class="deploy-services">Next.js Frontend<br/>Automatic GitHub deploys<br/>Free SSL + CDN<br/>Unlimited bandwidth (hobby)</div>
+      </div>
+      <div class="deploy-card">
+        <div class="deploy-logo">🎨</div>
+        <div class="deploy-name">Render</div>
+        <div class="deploy-services">Spring Boot Gateway (Docker)<br/>FastAPI Agent Service<br/>ChromaDB (Docker)<br/>MLflow Server<br/>PostgreSQL (free 90 days)</div>
+      </div>
+      <div class="deploy-card">
+        <div class="deploy-logo">🤗</div>
+        <div class="deploy-name">HuggingFace Spaces</div>
+        <div class="deploy-services">Embedding model endpoint<br/>sentence-transformers serving<br/>Gradio demo UI<br/>Free GPU for inference</div>
+      </div>
+      <div class="deploy-card">
+        <div class="deploy-logo">📨</div>
+        <div class="deploy-name">Confluent Cloud</div>
+        <div class="deploy-services">Apache Kafka<br/>5GB free forever<br/>Managed brokers<br/>Schema Registry</div>
+      </div>
+      <div class="deploy-card">
+        <div class="deploy-logo">⬆️</div>
+        <div class="deploy-name">Upstash</div>
+        <div class="deploy-services">Redis for agent memory<br/>10,000 req/day free<br/>Serverless Redis<br/>TLS encrypted</div>
+      </div>
+      <div class="deploy-card">
+        <div class="deploy-logo">📊</div>
+        <div class="deploy-name">Grafana Cloud</div>
+        <div class="deploy-services">Prometheus metrics<br/>10k series free<br/>Alerting + dashboards<br/>Logs (10GB/month)</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="font-size:13px; color:var(--muted); margin-bottom:14px;">DEPLOYMENT TOPOLOGY</div>
+      <div class="code-block">
+┌─────────────────────────────────────────────────────────────┐
+│  USER BROWSER                                               │
+│  next.js app on vercel.app                                  │
+└─────────────────┬───────────────────────────────────────────┘
+                  │ HTTPS / WebSocket
+┌─────────────────▼───────────────────────────────────────────┐
+│  RENDER.COM — Service 1: Spring Boot Gateway                │
+│  gateway.onrender.com · Docker · Java 17                    │
+│  → PostgreSQL (Supabase)                                    │
+│  → Redis (Upstash)                                          │
+│  → Kafka (Confluent Cloud)                                  │
+└─────────────────┬───────────────────────────────────────────┘
+                  │ Kafka events
+┌─────────────────▼───────────────────────────────────────────┐
+│  RENDER.COM — Service 2: FastAPI Agent Service              │
+│  agents.onrender.com · Docker · Python 3.11                 │
+│  → Groq API (external)                                      │
+│  → HuggingFace Inference (external)                         │
+│  → ChromaDB (Service 3)                                     │
+│  → MCP Servers (internal)                                   │
+└─────────────────┬───────────────────────────────────────────┘
+                  │ HTTP
+┌─────────────────▼───────────────────────────────────────────┐
+│  RENDER.COM — Service 3: ChromaDB + MLflow                  │
+│  chromadb.onrender.com · Docker                             │
+│  mlflow.onrender.com · Docker                               │
+└─────────────────────────────────────────────────────────────┘
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ FEASIBILITY -->
+<section id="feasibility">
+  <div class="container">
+    <div class="section-label">10 · Feasibility Analysis</div>
+    <h2 class="section-title">What's Realistic, What's Risky</h2>
+    <p class="section-desc">Honest assessment of every dimension of this project. Know these before you start.</p>
+
+    <div class="grid-2" style="margin-bottom:28px; gap:28px;">
+      <div>
+        <div style="font-size:13px; font-weight:600; color:var(--muted); margin-bottom:14px; text-transform:uppercase; letter-spacing:1px;">Technical Feasibility Score</div>
+        <div class="card" style="padding:20px;">
+          <div class="feas-item">
+            <div class="feas-label">Spring Boot + Kafka setup</div>
+            <div class="feas-bar-wrap"><div class="feas-bar" style="width:90%; background:var(--accent3);"></div></div>
+            <div class="feas-score" style="color:var(--accent3);">9/10</div>
+          </div>
+          <div class="feas-item">
+            <div class="feas-label">LangGraph agent orchestration</div>
+            <div class="feas-bar-wrap"><div class="feas-bar" style="width:75%; background:var(--accent3);"></div></div>
+            <div class="feas-score" style="color:var(--accent3);">7/10</div>
+          </div>
+          <div class="feas-item">
+            <div class="feas-label">MCP server development</div>
+            <div class="feas-bar-wrap"><div class="feas-bar" style="width:80%; background:var(--accent3);"></div></div>
+            <div class="feas-score" style="color:var(--accent3);">8/10</div>
+          </div>
+          <div class="feas-item">
+            <div class="feas-label">RAG pipeline (hybrid search)</div>
+            <div class="feas-bar-wrap"><div class="feas-bar" style="width:70%; background:var(--accent4);"></div></div>
+            <div class="feas-score" style="color:var(--accent4);">7/10</div>
+          </div>
+          <div class="feas-item">
+            <div class="feas-label">4-layer memory system</div>
+            <div class="feas-bar-wrap"><div class="feas-bar" style="width:65%; background:var(--accent4);"></div></div>
+            <div class="feas-score" style="color:var(--accent4);">6.5/10</div>
+          </div>
+          <div class="feas-item">
+            <div class="feas-label">Self-improving agent loop</div>
+            <div class="feas-bar-wrap"><div class="feas-bar" style="width:60%; background:var(--accent4);"></div></div>
+            <div class="feas-score" style="color:var(--accent4);">6/10</div>
+          </div>
+          <div class="feas-item">
+            <div class="feas-label">Full deployment on free tier</div>
+            <div class="feas-bar-wrap"><div class="feas-bar" style="width:85%; background:var(--accent3);"></div></div>
+            <div class="feas-score" style="color:var(--accent3);">8.5/10</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:13px; font-weight:600; color:var(--muted); margin-bottom:14px; text-transform:uppercase; letter-spacing:1px;">Risk Analysis</div>
+        <div class="card" style="padding:20px;">
+          <div class="risk-row" style="padding-top:0;">
+            <div class="risk-name">Groq rate limits</div>
+            <div class="risk-impact"><span class="badge badge-amber">Medium</span></div>
+            <div class="risk-mitigation">Implement HuggingFace as fallback. Cache Groq responses in Redis. Queue requests when limit approached.</div>
+          </div>
+          <div class="risk-row">
+            <div class="risk-name">Render cold starts</div>
+            <div class="risk-impact"><span class="badge badge-amber">Medium</span></div>
+            <div class="risk-mitigation">Use Render's always-on free tier for gateway. Add health check ping to keep services warm.</div>
+          </div>
+          <div class="risk-row">
+            <div class="risk-name">Kafka latency spikes</div>
+            <div class="risk-impact"><span class="badge badge-green">Low</span></div>
+            <div class="risk-mitigation">Confluent free tier is sufficient for &lt;100 concurrent users. Add timeout + retry logic in consumers.</div>
+          </div>
+          <div class="risk-row">
+            <div class="risk-name">LangGraph state complexity</div>
+            <div class="risk-impact"><span class="badge badge-red">High</span></div>
+            <div class="risk-mitigation">Start with linear graph (no parallelism). Add parallel execution only after core agents are tested individually.</div>
+          </div>
+          <div class="risk-row">
+            <div class="risk-name">MCP server auth (OAuth)</div>
+            <div class="risk-impact"><span class="badge badge-amber">Medium</span></div>
+            <div class="risk-mitigation">Use service account keys for Google APIs in dev. Implement full OAuth flow in Week 8 before production demo.</div>
+          </div>
+          <div class="risk-row">
+            <div class="risk-name">8-week timeline</div>
+            <div class="risk-impact"><span class="badge badge-amber">Medium</span></div>
+            <div class="risk-mitigation">Part 1 is the MVP. Part 2 adds depth. If behind, drop Grafana dashboards — they're showcase, not core functionality.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Management Tools -->
+    <div class="section-label" style="margin-bottom:12px;">Project Management Setup</div>
+    <div class="grid-4">
+      <div class="card" style="text-align:center; padding:16px;">
+        <div style="font-size:24px; margin-bottom:6px;">📋</div>
+        <div style="font-weight:600; font-size:14px; margin-bottom:4px;">GitHub Projects</div>
+        <div style="font-size:12px; color:var(--muted);">Kanban board. One card per task item in this plan.</div>
+      </div>
+      <div class="card" style="text-align:center; padding:16px;">
+        <div style="font-size:24px; margin-bottom:6px;">📓</div>
+        <div style="font-weight:600; font-size:14px; margin-bottom:4px;">Notion</div>
+        <div style="font-size:12px; color:var(--muted);">Architecture docs, meeting notes, research links.</div>
+      </div>
+      <div class="card" style="text-align:center; padding:16px;">
+        <div style="font-size:24px; margin-bottom:6px;">✏️</div>
+        <div style="font-weight:600; font-size:14px; margin-bottom:4px;">Excalidraw</div>
+        <div style="font-size:12px; color:var(--muted);">Quick architecture sketches and whiteboarding.</div>
+      </div>
+      <div class="card" style="text-align:center; padding:16px;">
+        <div style="font-size:24px; margin-bottom:6px;">🧪</div>
+        <div style="font-weight:600; font-size:14px; margin-bottom:4px;">Postman</div>
+        <div style="font-size:12px; color:var(--muted);">Test all Spring Boot endpoints before frontend integration.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ FINAL CHECKLIST -->
+<section>
+  <div class="container">
+    <div class="section-label">11 · Project Completion Checklist</div>
+    <h2 class="section-title">Definition of Done</h2>
+    <p class="section-desc">Every item on this list checked = project complete and portfolio-ready.</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" style="font-size:13px; color:var(--accent2); margin-bottom:14px;">PART 1 DELIVERABLES</div>
+        <ul class="checklist">
+          <li>Next.js frontend deployed on Vercel with auth working</li>
+          <li>Spring Boot gateway deployed on Render with JWT + Swagger</li>
+          <li>Kafka topics set up on Confluent Cloud</li>
+          <li>FastAPI consuming Kafka events and routing to agents</li>
+          <li>All 5 agents (Research, Memory, Coding, Planner, Monitor) functional</li>
+          <li>LangGraph state machine wiring all agents</li>
+          <li>GitHub MCP + Calendar MCP + Browser MCP servers built</li>
+          <li>ChromaDB running on Render with embeddings stored</li>
+          <li>Hybrid RAG pipeline (dense + sparse) working</li>
+          <li>End-to-end test: DS interview query produces full output on UI</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title" style="font-size:13px; color:var(--accent3); margin-bottom:14px;">PART 2 DELIVERABLES</div>
+        <ul class="checklist">
+          <li>4-layer memory system (Redis + PostgreSQL + ChromaDB + episodic)</li>
+          <li>Self-improving agent loop with quality scoring + retry</li>
+          <li>MLflow tracking all agent experiments</li>
+          <li>Quiz generator producing MCQs from RAG topics</li>
+          <li>Progress tracker with mastery scores per topic</li>
+          <li>Prometheus metrics on both Spring Boot and FastAPI</li>
+          <li>Grafana dashboard showing system health + agent performance</li>
+          <li>Docker Compose for local full-stack development</li>
+          <li>GitHub Actions CI/CD pipeline fully automated</li>
+          <li>Research paper (4–6 pages) on memory architecture</li>
+          <li>10-minute demo video recorded</li>
+          <li>GitHub README with architecture diagrams + quick start</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div style="margin-bottom:8px;">⬡ NeuroVerse AI OS · Master Project Document</div>
+    <div>8-Week Build Plan · 100% Free Tier · Production Deployable · Research-Grade Architecture</div>
+  </div>
+</footer>
+
+</main>
+</body>
+</html>
